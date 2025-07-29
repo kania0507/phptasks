@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h2>Edytuj użytkownika: {{ user.name }}</h2>
+
+<form id="edit-form">
+    <label>Imię: <input type="text" name="name" value="{{ user.name }}"></label><br>
+    <label>Email: <input type="email" name="email" value="{{ user.email }}"></label><br>
+    <label>Płeć:
+        <select name="gender">
+            <option value="male" {% if user.gender == 'male' %}selected{% endif %}>Mężczyzna</option>
+            <option value="female" {% if user.gender == 'female' %}selected{% endif %}>Kobieta</option>
+        </select>
+    </label><br>
+    <label>Status:
+        <select name="status">
+            <option value="active" {% if user.status == 'active' %}selected{% endif %}>Aktywny</option>
+            <option value="inactive" {% if user.status == 'inactive' %}selected{% endif %}>Nieaktywny</option>
+        </select>
+    </label><br>
+    <button type="submit">Zapisz</button>
+</form>
+
+<div id="result"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$('#edit-form').on('submit', function(e) {
+    e.preventDefault();
+
+    let data = {
+        name: $('input[name="name"]').val(),
+        email: $('input[name="email"]').val(),
+        gender: $('select[name="gender"]').val(),
+        status: $('select[name="status"]').val()
+    };
+
+    $.ajax({
+        url: '',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(response) {
+    if (response.redirect) {
+        window.location.href = response.redirect;
+    } else {
+        $('#result').html('<p style="color:green;">Zapisano lokalnie!</p>');
+    }
+},
+        error: function() {
+            $('#result').html('<p style="color:red;">Błąd zapisu</p>');
+        }
+    });
+});
+</script>
+{% endblock %}

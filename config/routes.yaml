@@ -1,0 +1,11 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+user_list:
+    path: /
+    controller: App\Controller\UserController::index
+
+user_edit:
+    path: /user/{id}/edit
+    controller: App\Controller\UserController::edit
+    methods: [GET, POST]
